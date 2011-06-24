@@ -1,3 +1,22 @@
+/* 
+Copyright 2011 James Richardson.
+
+This file is part of SimpleStats.
+
+SimpleStats is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+SimpleStats is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with SimpleStats.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package name.richardson.james.simplestats;
 
 import name.richardson.james.simplestats.SimpleStatsPlayerListener;
@@ -26,7 +45,6 @@ public class SimpleStats extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_JOIN, PlayerListener, Event.Priority.Monitor, this);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, PlayerListener, Event.Priority.Monitor, this);
-
 	}
  
 	public void onDisable(){
