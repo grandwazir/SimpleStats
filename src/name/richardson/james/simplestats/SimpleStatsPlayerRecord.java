@@ -33,7 +33,7 @@ public class SimpleStatsPlayerRecord {
 	@Id
     private long time;
 	
-    @NotNull
+	@NotNull
     private int playerCount;
     
     @NotNull
