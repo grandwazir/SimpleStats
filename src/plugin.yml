@@ -1,0 +1,4 @@
+name: SimpleStats
+main: name.richardson.james.simplestats.SimpleStats
+version: 1.0.1
+database: true
