@@ -1,5 +1,7 @@
 name: SimpleStats
+description: Tracks the number of players and memory usage over time.
+author: James Richardson (grandwazir)
+website: https://github.com/grandwazir/SimpleStats
 main: name.richardson.james.simplestats.SimpleStats
-version: 1.1.0
+version: 1.2.0
 database: true
-

@@ -22,7 +22,6 @@ import name.richardson.james.simplestats.persistant.MemoryStatusRecord;
 import name.richardson.james.simplestats.persistant.PlayerCountRecord;
 import name.richardson.james.simplestats.scheduled.MemoryUsage;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
