@@ -81,12 +81,13 @@ public class SimpleStats extends JavaPlugin {
     
   public void onDisable(){
 		scheduler.cancelTasks(this);
-		log(Level.INFO, desc.getFullName() + " has been disabled");
+		log(Level.INFO, desc.getName() + " is now disabled");
 	}
   
   public void onEnable(){
     desc = getDescription();
 		db = getDatabase();
+    pm = getServer().getPluginManager();
 		scheduler = getServer().getScheduler();
 		
     try {
@@ -102,13 +103,12 @@ public class SimpleStats extends JavaPlugin {
     if (!pm.isPluginEnabled(this)) return;
 		
 		// Register our events
-		pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Event.Priority.Monitor, this);
 		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Monitor, this);
 		
 		// Start scheduled tasks
 		scheduler.scheduleSyncRepeatingTask(this, new MemoryUsage(), 20, MemoryUsage.repeatTimeInTicks);
-		log(Level.INFO, desc.getFullName() + " has been enabled");
+		log(Level.INFO, desc.getFullName() + " is now enabled");
 	}
     
 	private void setupDatabase() {
