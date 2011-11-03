@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * Copyright (c) 2011 James Richardson.
+ * 
+ * SimpleStats.java is part of SimpleStats.
+ * 
+ * SimpleStats is free software: you can redistribute it and/or modify it 
+ * under the terms of the GNU General Public License as published by the Free 
+ * Software Foundation, either version 3 of the License, or (at your option) 
+ * any later version.
+ * 
+ * SimpleStats is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License 
+ * along with SimpleStats.  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
 /* 
 Copyright 2011 James Richardson.
 
@@ -21,9 +38,7 @@ package name.richardson.james.simplestats;
 
 import name.richardson.james.simplestats.listeners.SimpleStatsPlayerListener;
 import name.richardson.james.simplestats.persistant.MemoryStatusRecord;
-import name.richardson.james.simplestats.persistant.PlayerCountAverageRecord;
 import name.richardson.james.simplestats.persistant.PlayerCountRecord;
-import name.richardson.james.simplestats.scheduled.AveragePlayerCount;
 import name.richardson.james.simplestats.scheduled.MemoryUsage;
 
 import java.util.ArrayList;
@@ -73,7 +88,6 @@ public class SimpleStats extends JavaPlugin {
 		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Monitor, this);
 		
 		// Start scheduled tasks
-		scheduler.scheduleSyncRepeatingTask(this, new AveragePlayerCount(), 20, AveragePlayerCount.repeatTimeInTicks);
 		scheduler.scheduleSyncRepeatingTask(this, new MemoryUsage(), 20, MemoryUsage.repeatTimeInTicks);
 		
 		log(Level.INFO, desc.getFullName() + " has been enabled");
@@ -111,7 +125,6 @@ public class SimpleStats extends JavaPlugin {
 	private void setupDatabase() {
 		try {
             getDatabase().find(PlayerCountRecord.class).findRowCount();
-            getDatabase().find(PlayerCountAverageRecord.class).findRowCount();
             getDatabase().find(MemoryStatusRecord.class).findRowCount();
         } catch (PersistenceException ex) {
         	installDDL();
@@ -122,7 +135,6 @@ public class SimpleStats extends JavaPlugin {
     public List<Class<?>> getDatabaseClasses() {
         List<Class<?>> list = new ArrayList<Class<?>>();
         list.add(PlayerCountRecord.class);
-        list.add(PlayerCountAverageRecord.class);
         list.add(MemoryStatusRecord.class);
         return list;
     }
