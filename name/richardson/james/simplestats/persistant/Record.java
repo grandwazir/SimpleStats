@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License 
  * along with SimpleStats.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+
 package name.richardson.james.simplestats.persistant;
 
 import javax.persistence.Entity;
@@ -22,17 +23,16 @@ import javax.persistence.Table;
 
 import name.richardson.james.simplestats.SimpleStats;
 
-
 @Entity()
-@Table(name = "littlesister_history")
+@Table(name = "simplestats")
 public class Record {
 
-	public void destroy() {
-		SimpleStats.getDb().delete(this);
-	}
-	
-	public void save() {
-		SimpleStats.getDb().save(this);
-	}
-	
+  public void destroy() {
+    SimpleStats.getDb().delete(this);
+  }
+
+  public void save() {
+    SimpleStats.getDb().save(this);
+  }
+
 }
