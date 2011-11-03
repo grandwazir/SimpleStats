@@ -79,14 +79,6 @@ public class SimpleStats extends JavaPlugin {
     return list;
   }
     
-  public String getName() {
-    return desc.getName();
-  }
-    
-  public String getVersion() {
-    return desc.getVersion();
-  }
-    
   public void onDisable(){
 		scheduler.cancelTasks(this);
 		log(Level.INFO, desc.getFullName() + " has been disabled");
