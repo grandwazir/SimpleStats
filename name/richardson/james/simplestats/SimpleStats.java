@@ -22,6 +22,7 @@ import name.richardson.james.simplestats.persistant.MemoryStatusRecord;
 import name.richardson.james.simplestats.persistant.PlayerCountRecord;
 import name.richardson.james.simplestats.scheduled.MemoryUsage;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -97,7 +98,17 @@ public class SimpleStats extends JavaPlugin {
 		db = getDatabase();
 		scheduler = getServer().getScheduler();
 		
-		setupDatabase();
+    try {
+      setupDatabase();
+    } catch (Exception e) {
+      // I know we should not generally catch Exception but it is safe to assume in this case.
+      // Plus the methods used in installDDL() seem to be undocumented.
+      log(Level.SEVERE, "Unable to establish database!");
+      pm.disablePlugin(this);
+    }
+
+    // check to see if we are disabled, needed to avoid warnings.
+    if (!pm.isPluginEnabled(this)) return;
 		
 		// Register our events
 		pm = getServer().getPluginManager();
