@@ -11,16 +11,16 @@
  * along with SimpleStats.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package name.richardson.james.bukkit.simplestats.listeners;
+package name.richardson.james.bukkit.simplestats.player;
 
 import name.richardson.james.bukkit.simplestats.SimpleStats;
-import name.richardson.james.bukkit.simplestats.persistant.PlayerCountRecord;
 
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class SimpleStatsPlayerListener extends PlayerListener {
+public class PlayerListener implements Listener {
 
   public void onPlayerJoin(PlayerJoinEvent event) {
     onPlayerCountChanged(SimpleStats.getPlayerCount());

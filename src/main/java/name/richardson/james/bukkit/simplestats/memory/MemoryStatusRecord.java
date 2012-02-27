@@ -11,13 +11,15 @@
  * along with SimpleStats.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package name.richardson.james.bukkit.simplestats.persistant;
+package name.richardson.james.bukkit.simplestats.memory;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.avaje.ebean.validation.NotNull;
+
+import name.richardson.james.bukkit.simplestats.persistant.Record;
 
 @Entity()
 @Table(name = "simplestats_memory")

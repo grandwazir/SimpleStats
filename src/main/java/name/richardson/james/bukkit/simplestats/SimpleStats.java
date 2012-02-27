@@ -17,7 +17,7 @@
  ******************************************************************************/
 package name.richardson.james.bukkit.simplestats;
 
-import name.richardson.james.bukkit.simplestats.persistant.PlayerCountRecord;
+import name.richardson.james.bukkit.simplestats.player.PlayerCountRecord;
 import name.richardson.james.bukkit.utilities.internals.Logger;
 import name.richardson.james.bukkit.utilities.plugin.SimplePlugin;
 

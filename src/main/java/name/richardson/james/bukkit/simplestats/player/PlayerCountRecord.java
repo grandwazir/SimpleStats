@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2011 James Richardson.
  * 
- * Record.java is part of SimpleStats.
+ * PlayerCountRecord.java is part of SimpleStats.
  * 
  * SimpleStats is free software: you can redistribute it and/or modify it 
  * under the terms of the GNU General Public License as published by the Free 
@@ -16,23 +16,55 @@
  * along with SimpleStats.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package name.richardson.james.bukkit.simplestats.persistant;
+package name.richardson.james.bukkit.simplestats.player;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
-import name.richardson.james.bukkit.simplestats.SimpleStats;
+import com.avaje.ebean.validation.NotNull;
+
+import name.richardson.james.bukkit.simplestats.persistant.Record;
 
 @Entity()
-@Table(name = "simplestats")
-public class Record {
+@Table(name = "simplestats_players")
+public class PlayerCountRecord {
 
-  public void destroy() {
-    SimpleStats.getDb().delete(this);
+  @Id
+  private long createdAt;
+
+  @NotNull
+  private int  playerCount;
+
+  @NotNull
+  private int  playerMax;
+
+  public PlayerCountRecord() {
+    this.createdAt = System.currentTimeMillis();
   }
 
-  public void save() {
-    SimpleStats.getDb().save(this);
+  public void setCreatedAt(long createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public long getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setPlayerCount(int playerCount) {
+    this.playerCount = playerCount;
+  }
+
+  public int getPlayerCount() {
+    return playerCount;
+  }
+
+  public void setPlayerMax(int playerMax) {
+    this.playerMax = playerMax;
+  }
+
+  public int getPlayerMax() {
+    return playerMax;
   }
 
 }
