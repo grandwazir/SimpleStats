@@ -19,11 +19,9 @@ import javax.persistence.Table;
 
 import com.avaje.ebean.validation.NotNull;
 
-import name.richardson.james.bukkit.simplestats.persistant.Record;
-
 @Entity()
 @Table(name = "simplestats_memory")
-public class MemoryStatusRecord extends Record {
+public class MemoryStatusRecord {
 
   @Id
   private long createdAt;

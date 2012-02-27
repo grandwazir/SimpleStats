@@ -18,18 +18,19 @@
 
 package name.richardson.james.bukkit.simplestats.memory;
 
+import name.richardson.james.bukkit.simplestats.DatabaseHandler;
 
-public class MemoryUsage implements Runnable {
+public class MemoryUsageTask implements Runnable {
 
-  private final static long tickPerSecond            = 20;
-  private final static long repeatTimeInMilliseconds = 300000;
+  private final DatabaseHandler handler;
 
-  public final static long  repeatTimeInTicks        = (repeatTimeInMilliseconds / 1000) * tickPerSecond;
-
+  public MemoryUsageTask(final DatabaseHandler handler) {
+    this.handler = handler;
+  }
+  
   public void run() {
     Runtime runtime = Runtime.getRuntime();
     final int mb = 1024 * 1024;
-
     int maxMemory = (int) runtime.maxMemory() / mb;
     int totalMemory = (int) runtime.totalMemory() / mb;
     int freeMemory = (int) runtime.freeMemory() / mb;
@@ -41,6 +42,7 @@ public class MemoryUsage implements Runnable {
     record.setMemoryTotal(totalMemory);
     record.setMemoryUsed(usedMemory);
     record.setMemoryFree(freeMemory);
-    record.save();
+    handler.save(record);
   }
+  
 }

@@ -13,27 +13,49 @@
 
 package name.richardson.james.bukkit.simplestats.player;
 
+import name.richardson.james.bukkit.simplestats.DatabaseHandler;
 import name.richardson.james.bukkit.simplestats.SimpleStats;
 
+import org.bukkit.Server;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListener implements Listener {
 
+  private final Server server;
+  private final DatabaseHandler handler;
+  
+  public PlayerListener(final SimpleStats plugin) {
+    this.server = plugin.getServer();
+    this.handler = plugin.getDatabaseHandler();
+  }
+  
+  @EventHandler(priority = EventPriority.MONITOR)
   public void onPlayerJoin(PlayerJoinEvent event) {
-    onPlayerCountChanged(SimpleStats.getPlayerCount());
+    onPlayerCountChanged(this.getPlayerCount());
   }
 
+  @EventHandler(priority = EventPriority.MONITOR)
   public void onPlayerQuit(PlayerQuitEvent event) {
-    onPlayerCountChanged(SimpleStats.getPlayerCount() - 1);
+    onPlayerCountChanged(this.getPlayerCount() - 1);
   }
 
   private void onPlayerCountChanged(int playerCount) {
     PlayerCountRecord record = new PlayerCountRecord();
     record.setPlayerCount(playerCount);
-    record.setPlayerMax(SimpleStats.getMaxPlayerCount());
-    record.save();
+    record.setPlayerMax(this.getMaxPlayers());
+    handler.save(record);
   }
+  
+  private int getMaxPlayers() {
+    return this.server.getMaxPlayers();
+  }
+  
+  private int getPlayerCount() {
+    return this.server.getOnlinePlayers().length;
+  }
+  
 }

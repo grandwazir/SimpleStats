@@ -24,8 +24,6 @@ import javax.persistence.Table;
 
 import com.avaje.ebean.validation.NotNull;
 
-import name.richardson.james.bukkit.simplestats.persistant.Record;
-
 @Entity()
 @Table(name = "simplestats_players")
 public class PlayerCountRecord {
