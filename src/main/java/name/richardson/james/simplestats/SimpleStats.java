@@ -17,108 +17,61 @@
  ******************************************************************************/
 package name.richardson.james.simplestats;
 
-import name.richardson.james.simplestats.listeners.SimpleStatsPlayerListener;
-import name.richardson.james.simplestats.persistant.MemoryStatusRecord;
+import name.richardson.james.bukkit.utilities.internals.Logger;
+import name.richardson.james.bukkit.utilities.plugin.SimplePlugin;
 import name.richardson.james.simplestats.persistant.PlayerCountRecord;
-import name.richardson.james.simplestats.scheduled.MemoryUsage;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import java.io.IOException;
+import java.sql.SQLException;
 import javax.persistence.PersistenceException;
-
-import org.bukkit.event.Event;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
-
-import com.avaje.ebean.EbeanServer;
  
-public class SimpleStats extends JavaPlugin {
+public class SimpleStats extends SimplePlugin {
  
-	private final static Logger logger = Logger.getLogger("Minecraft");
-	
-	private PluginManager pm;
-  private PluginDescriptionFile desc;
-  private BukkitScheduler scheduler;
+  private DatabaseHandler databaseHandler;
+  private SimpleStatsConfiguration configuration;
     
-  private static EbeanServer db;
-	private static SimpleStats instance;
-    
-  private final SimpleStatsPlayerListener playerListener;
-    
-  public SimpleStats() {
-    SimpleStats.instance = this;
-    this.playerListener = new SimpleStatsPlayerListener();
-  }
-    
-	public static EbeanServer getDb() {
-    return db;
-  }
- 
-	public static int getMaxPlayerCount() {
-    return SimpleStats.instance.getServer().getMaxPlayers();
-  }
-	
-  public static int getPlayerCount() {
-    return SimpleStats.instance.getServer().getOnlinePlayers().length;
-  }
-	
-  public static void log(Level level, String msg) {
-    logger.log(level, "[SimpleStats] " + msg);
-  }
-    
-  @Override
-  public List<Class<?>> getDatabaseClasses() {
-    List<Class<?>> list = new ArrayList<Class<?>>();
-    list.add(PlayerCountRecord.class);
-    list.add(MemoryStatusRecord.class);
-    return list;
+	public DatabaseHandler getDatabaseHandler() {
+    return this.databaseHandler;
   }
     
   public void onDisable(){
-		scheduler.cancelTasks(this);
-		log(Level.INFO, desc.getName() + " is now disabled");
+		this.getServer().getScheduler().cancelTasks(this);
 	}
   
   public void onEnable(){
-    desc = getDescription();
-		db = getDatabase();
-    pm = getServer().getPluginManager();
-		scheduler = getServer().getScheduler();
 		
     try {
+      logger.setPrefix("[SimpleStats] ");
+      this.setResourceBundle();
+      loadConfiguration();
       setupDatabase();
-    } catch (Exception e) {
-      // I know we should not generally catch Exception but it is safe to assume in this case.
-      // Plus the methods used in installDDL() seem to be undocumented.
-      log(Level.SEVERE, "Unable to establish database!");
-      pm.disablePlugin(this);
+    } catch (IOException e) {
+      this.logger.severe("Unable to create configuration!");
+      this.setEnabled(false);
+    } catch (SQLException e) {
+      this.logger.severe("Unable to initalise database!");
+      e.printStackTrace();
+    } finally {
+      if (!this.isEnabled()) return;
     }
-
-    // check to see if we are disabled, needed to avoid warnings.
-    if (!pm.isPluginEnabled(this)) return;
-		
-		// Register our events
-		pm.registerEvent(Event.Type.PLAYER_JOIN, playerListener, Event.Priority.Monitor, this);
-		pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Monitor, this);
-		
-		// Start scheduled tasks
-		scheduler.scheduleSyncRepeatingTask(this, new MemoryUsage(), 20, MemoryUsage.repeatTimeInTicks);
-		log(Level.INFO, desc.getFullName() + " is now enabled");
+    
 	}
     
-	private void setupDatabase() {
-		try {
-		  getDatabase().find(PlayerCountRecord.class).findRowCount();
-      getDatabase().find(MemoryStatusRecord.class).findRowCount();
-    } catch (PersistenceException ex) {
-      log(Level.WARNING, "No database found, creating schema.");
+	private void loadConfiguration() throws IOException {
+    configuration = new SimpleStatsConfiguration(this);
+    if (configuration.isDebugging()) {
+      Logger.setDebugging(this, true);
+    } 
+  }
+
+  private void setupDatabase() throws SQLException {
+    try {
+      getDatabase().find(PlayerCountRecord.class).findRowCount();
+    } catch (final PersistenceException ex) {
+      logger.warning("No database schema found; making a new one.");
       installDDL();
     }
+    databaseHandler = new DatabaseHandler(getDatabase());
 	}
 	
 }
