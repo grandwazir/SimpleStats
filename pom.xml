@@ -139,6 +139,25 @@
           </plugin>
 
           <plugin>
+              <groupId>com.github.github</groupId>
+              <artifactId>downloads-maven-plugin</artifactId>
+              <version>0.4</version>
+              <configuration>
+                <description>${project.version} release of ${project.name}</description>
+                <override>true</override>
+                <includeAttached>false</includeAttached>
+              </configuration>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>upload</goal>
+                  </goals>
+                  <phase>install</phase>
+                </execution>
+              </executions>
+          </plugin>
+
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-release-plugin</artifactId>
             <version>2.2.2</version>
