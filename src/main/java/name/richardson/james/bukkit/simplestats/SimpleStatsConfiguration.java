@@ -1,3 +1,21 @@
+/*******************************************************************************
+ * Copyright (c) 2012 James Richardson.
+ * 
+ * SimpleStatsConfiguration.java is part of SimpleStats.
+ * 
+ * SimpleStats is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * SimpleStats is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * SimpleStats. If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
 package name.richardson.james.bukkit.simplestats;
 
 import java.io.IOException;
@@ -11,29 +29,29 @@ public class SimpleStatsConfiguration extends AbstractConfiguration {
   public SimpleStatsConfiguration(final SimplePlugin plugin) throws IOException {
     super(plugin, "config.yml");
   }
-  
-  public boolean isDebugging() {
-    return configuration.getBoolean("debugging");
-  }
-  
-  public boolean isMemoryUsageTrackingEnabled() {
-    return configuration.getBoolean("memory-tracking.enabled");
-  }
-  
-  public boolean isPerformanceTrackingEnabled() {
-    return configuration.getBoolean("performance-tracking.enabled");
-  }
-  
-  public long getPerformaceTrackingInterval() {
-    return TimeFormatter.parseTime(configuration.getString("performance-tracking.interval", "5m")); 
-  }
-  
+
   public long getMemoryUsageTrackingInterval() {
-    return TimeFormatter.parseTime(configuration.getString("memory-tracking.interval", "5m")); 
+    return TimeFormatter.parseTime(this.configuration.getString("memory-tracking.interval", "5m"));
   }
-  
+
+  public long getPerformaceTrackingInterval() {
+    return TimeFormatter.parseTime(this.configuration.getString("performance-tracking.interval", "5m"));
+  }
+
+  public boolean isDebugging() {
+    return this.configuration.getBoolean("debugging");
+  }
+
+  public boolean isMemoryUsageTrackingEnabled() {
+    return this.configuration.getBoolean("memory-tracking.enabled");
+  }
+
+  public boolean isPerformanceTrackingEnabled() {
+    return this.configuration.getBoolean("performance-tracking.enabled");
+  }
+
   public boolean isPlayerCountTrackingEnabled() {
-    return configuration.getBoolean("player-count-tracking.enabled");
+    return this.configuration.getBoolean("player-count-tracking.enabled");
   }
-  
+
 }
