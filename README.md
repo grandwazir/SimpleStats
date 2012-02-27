@@ -24,7 +24,7 @@ Before installing, you need to make sure you are running at least the latest [re
 
 The best way to install SimpleStats is to use the [symbolic link](http://repository.james.richardson.name/symbolic/SimpleStats.jar) to the latest version. This link always points to the latest version of SimpleStats, so is safe to use in scripts or update plugins. Additionally you can to use the [RSS feed](http://dev.bukkit.org/server-mods/SimpleStats/files.rss) provided by BukkitDev as this also includes a version changelog.
     
-Alternatively [older versions](http://repository.james.richardson.name/releases/name/richardson/james/bukkit/simplestats/) are available as well, however they are not supported. If you are forced to use an older version for whatever reason, please let me know why by [opening a issue](https://github.com/grandwazir/SimpleStats/issues/new) on GitHub.
+Alternatively [older versions](http://repository.james.richardson.name/releases/name/richardson/james/bukkit/simple-stats/) are available as well, however they are not supported. If you are forced to use an older version for whatever reason, please let me know why by [opening a issue](https://github.com/grandwazir/SimpleStats/issues/new) on GitHub.
 
 ## Configuration
 
