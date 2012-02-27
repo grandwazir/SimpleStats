@@ -18,6 +18,7 @@
 package name.richardson.james.bukkit.simplestats;
 
 import name.richardson.james.bukkit.simplestats.memory.MemoryUsageTask;
+import name.richardson.james.bukkit.simplestats.performance.TickPerSecondMeasurementTask;
 import name.richardson.james.bukkit.simplestats.player.PlayerCountRecord;
 import name.richardson.james.bukkit.simplestats.player.PlayerListener;
 import name.richardson.james.bukkit.utilities.internals.Logger;
@@ -33,7 +34,8 @@ public class SimpleStats extends SimplePlugin {
   private SimpleStatsConfiguration configuration;
   private PlayerListener playerListener;
   
-  private int MemoryUsageTaskId; 
+  private int MemoryUsageTaskId;
+  private int TickPerSecondMeasurementTaskId; 
     
 	public DatabaseHandler getDatabaseHandler() {
     return this.databaseHandler;
@@ -42,6 +44,7 @@ public class SimpleStats extends SimplePlugin {
   public void onDisable(){
 		this.enableMemoryUsageTracking(false);
 		this.enablePlayerCountTracking(false);
+		this.getSimpleFormattedMessage("plugin-disabled", this.getDescription().getName());
 	}
   
   public void onEnable(){
@@ -53,15 +56,22 @@ public class SimpleStats extends SimplePlugin {
       setupDatabase();
       if (configuration.isPlayerCountTrackingEnabled()) this.enablePlayerCountTracking(true);
       if (configuration.isMemoryUsageTrackingEnabled()) this.enableMemoryUsageTracking(true);
+      if (configuration.isPerformaceTrackingEnabled()) this.enablePerformanceTracking(true);
     } catch (IOException e) {
-      this.logger.severe("Unable to create configuration!");
+      this.logger.severe(this.getMessage("unable-to-create-configuration"));
       this.setEnabled(false);
     } catch (SQLException e) {
-      this.logger.severe("Unable to initalise database!");
+      this.logger.severe(this.getMessage("unable-to-use-database"));
       e.printStackTrace();
+      this.setEnabled(false);
     } finally {
-      if (!this.isEnabled()) return;
+      if (!this.isEnabled()) {
+        this.logger.severe(this.getMessage("panic"));
+        return;
+      }
     }
+    
+    this.getSimpleFormattedMessage("plugin-enabled", this.getDescription().getFullName());
     
 	}
   
@@ -88,6 +98,23 @@ public class SimpleStats extends SimplePlugin {
     }
   }
   
+  public void enablePerformanceTracking(boolean status) {
+    if (status) {
+      TickPerSecondMeasurementTask task = new TickPerSecondMeasurementTask(this);
+      long tickInterval = (configuration.getPerformaceTrackingInterval() / 1000) * 20;
+      TickPerSecondMeasurementTaskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, task, 0, tickInterval);
+    } else {
+      if (TickPerSecondMeasurementTaskId != 0) {
+        this.getServer().getScheduler().cancelTask(TickPerSecondMeasurementTaskId);
+        this.TickPerSecondMeasurementTaskId = 0;
+      }
+    }
+  }
+  
+  public SimpleStatsConfiguration getSimpleStatsConfiguration() {
+    return this.configuration;
+  }
+  
 	private void loadConfiguration() throws IOException {
     configuration = new SimpleStatsConfiguration(this);
     if (configuration.isDebugging()) {
@@ -99,7 +126,7 @@ public class SimpleStats extends SimplePlugin {
     try {
       getDatabase().find(PlayerCountRecord.class).findRowCount();
     } catch (final PersistenceException ex) {
-      logger.warning("No database schema found; making a new one.");
+      logger.warning(this.getMessage("no-database"));
       installDDL();
     }
     databaseHandler = new DatabaseHandler(getDatabase());
