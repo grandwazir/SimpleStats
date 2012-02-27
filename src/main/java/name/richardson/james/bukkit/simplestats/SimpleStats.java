@@ -26,6 +26,8 @@ import name.richardson.james.bukkit.utilities.plugin.SimplePlugin;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+
 import javax.persistence.PersistenceException;
  
 public class SimpleStats extends SimplePlugin {
@@ -41,10 +43,14 @@ public class SimpleStats extends SimplePlugin {
     return this.databaseHandler;
   }
     
+  public List<Class<?>> getDatabaseClasses() {
+    return DatabaseHandler.getDatabaseClasses();
+  }
+	
   public void onDisable(){
 		this.enableMemoryUsageTracking(false);
 		this.enablePlayerCountTracking(false);
-		this.getSimpleFormattedMessage("plugin-disabled", this.getDescription().getName());
+		logger.info(this.getSimpleFormattedMessage("plugin-disabled", this.getDescription().getName()));
 	}
   
   public void onEnable(){
@@ -56,7 +62,7 @@ public class SimpleStats extends SimplePlugin {
       setupDatabase();
       if (configuration.isPlayerCountTrackingEnabled()) this.enablePlayerCountTracking(true);
       if (configuration.isMemoryUsageTrackingEnabled()) this.enableMemoryUsageTracking(true);
-      if (configuration.isPerformaceTrackingEnabled()) this.enablePerformanceTracking(true);
+      if (configuration.isPerformanceTrackingEnabled()) this.enablePerformanceTracking(true);
     } catch (IOException e) {
       this.logger.severe(this.getMessage("unable-to-create-configuration"));
       this.setEnabled(false);
@@ -71,15 +77,17 @@ public class SimpleStats extends SimplePlugin {
       }
     }
     
-    this.getSimpleFormattedMessage("plugin-enabled", this.getDescription().getFullName());
+    logger.info(this.getSimpleFormattedMessage("plugin-enabled", this.getDescription().getFullName()));
     
 	}
   
   public void enablePlayerCountTracking(boolean status) {
     if (status) {
+      logger.debug("Enabling player count tracking.");
       playerListener = new PlayerListener(this);
       this.getServer().getPluginManager().registerEvents(playerListener, this);
     } else {
+      logger.debug("Disabling player count tracking.");
       // TODO - Add unregistering events when method is added to Bukkit.
       // See http://forums.bukkit.org/threads/unregistering-of-events.60817
     }
@@ -87,11 +95,13 @@ public class SimpleStats extends SimplePlugin {
   
   public void enableMemoryUsageTracking(boolean status) {
     if (status) {
+      logger.debug("Enabling memory usage tracking.");
       MemoryUsageTask task = new MemoryUsageTask(this.databaseHandler);
       long tickInterval = (configuration.getMemoryUsageTrackingInterval() / 1000) * 20;
       MemoryUsageTaskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, task, 0, tickInterval);
     } else {
       if (MemoryUsageTaskId != 0) {
+        logger.debug("Disabling memory usage tracking.");
         this.getServer().getScheduler().cancelTask(MemoryUsageTaskId);
         this.MemoryUsageTaskId = 0;
       }
@@ -100,11 +110,13 @@ public class SimpleStats extends SimplePlugin {
   
   public void enablePerformanceTracking(boolean status) {
     if (status) {
+      logger.debug("Enabling performance tracking.");
       TickPerSecondMeasurementTask task = new TickPerSecondMeasurementTask(this);
       long tickInterval = (configuration.getPerformaceTrackingInterval() / 1000) * 20;
       TickPerSecondMeasurementTaskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, task, 0, tickInterval);
     } else {
       if (TickPerSecondMeasurementTaskId != 0) {
+        logger.debug("Disabling performance tracking.");
         this.getServer().getScheduler().cancelTask(TickPerSecondMeasurementTaskId);
         this.TickPerSecondMeasurementTaskId = 0;
       }

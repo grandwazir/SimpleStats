@@ -36,28 +36,26 @@ public class TickPerSecondMeasurementTask implements Runnable {
   private long then;
   
   // The total elapsed time from between each run
-  private long elapsedTime;
+  private float elapsedTime;
 
-  private final long interval;
+  private final float interval;
 
   public TickPerSecondMeasurementTask(final SimpleStats plugin) {
     this.handler = plugin.getDatabaseHandler();
-    this.interval = plugin.getSimpleStatsConfiguration().getPerformaceTrackingInterval() / 1000;
+    this.interval = plugin.getSimpleStatsConfiguration().getPerformaceTrackingInterval();
   }
   
   public void run() {
     now = System.currentTimeMillis();
-    if (then != 0) {
-      elapsedTime = (now - then) / 1000;
-      float tps = (elapsedTime / interval) * tickRate;
+    elapsedTime = (now - then);
+    if (elapsedTime != now) {
+      float tps = (interval / elapsedTime) * tickRate;;
       TickRateRecord record = new TickRateRecord();
       record.setCreatedAt(now);
       record.setTickRate(roundTPS(tps));
       handler.save(record);
-    } else {
-      then = now;
-      return;
     }
+    then = System.currentTimeMillis();
   }
   
   private float roundTPS(float tps) {

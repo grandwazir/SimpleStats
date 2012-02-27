@@ -20,12 +20,12 @@ public class SimpleStatsConfiguration extends AbstractConfiguration {
     return configuration.getBoolean("memory-tracking.enabled");
   }
   
-  public boolean isPerformaceTrackingEnabled() {
-    return configuration.getBoolean("peformance-tracking.enabled");
+  public boolean isPerformanceTrackingEnabled() {
+    return configuration.getBoolean("performance-tracking.enabled");
   }
   
   public long getPerformaceTrackingInterval() {
-    return TimeFormatter.parseTime(configuration.getString("memory-tracking.interval", "5m")); 
+    return TimeFormatter.parseTime(configuration.getString("performance-tracking.interval", "5m")); 
   }
   
   public long getMemoryUsageTrackingInterval() {

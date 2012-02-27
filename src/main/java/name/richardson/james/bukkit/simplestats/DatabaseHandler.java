@@ -23,10 +23,17 @@ import java.util.List;
 
 import com.avaje.ebean.EbeanServer;
 
+import name.richardson.james.bukkit.simplestats.memory.MemoryStatusRecord;
+import name.richardson.james.bukkit.simplestats.performance.TickRateRecord;
+import name.richardson.james.bukkit.simplestats.player.PlayerCountRecord;
+
 public class DatabaseHandler extends name.richardson.james.bukkit.utilities.database.Database {
 
   public static List<Class<?>> getDatabaseClasses() {
     final List<Class<?>> list = new ArrayList<Class<?>>();
+    list.add(MemoryStatusRecord.class);
+    list.add(TickRateRecord.class);
+    list.add(PlayerCountRecord.class);
     return list;
   }
 

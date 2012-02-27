@@ -1,0 +1,9 @@
+debugging: false
+player-count-tracking:
+  enabled: true
+memory-tracking:
+  enabled: true
+  interval: 5m
+performance-tracking:
+  enabled: true
+  interval: 5m

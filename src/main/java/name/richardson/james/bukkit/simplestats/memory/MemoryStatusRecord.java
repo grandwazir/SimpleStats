@@ -77,4 +77,5 @@ public class MemoryStatusRecord {
   public int getMemoryMax() {
     return memoryMax;
   }
+  
 }
