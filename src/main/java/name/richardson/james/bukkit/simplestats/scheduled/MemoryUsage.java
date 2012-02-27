@@ -16,9 +16,9 @@
  * along with SimpleStats.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package name.richardson.james.simplestats.scheduled;
+package name.richardson.james.bukkit.simplestats.scheduled;
 
-import name.richardson.james.simplestats.persistant.MemoryStatusRecord;
+import name.richardson.james.bukkit.simplestats.persistant.MemoryStatusRecord;
 
 public class MemoryUsage implements Runnable {
 

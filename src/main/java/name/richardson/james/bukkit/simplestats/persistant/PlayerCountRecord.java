@@ -16,7 +16,7 @@
  * along with SimpleStats.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package name.richardson.james.simplestats.persistant;
+package name.richardson.james.bukkit.simplestats.persistant;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

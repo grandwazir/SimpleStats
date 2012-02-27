@@ -1,4 +1,4 @@
-package name.richardson.james.simplestats;
+package name.richardson.james.bukkit.simplestats;
 
 import java.io.IOException;
 

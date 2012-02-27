@@ -11,10 +11,10 @@
  * along with SimpleStats.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package name.richardson.james.simplestats.listeners;
+package name.richardson.james.bukkit.simplestats.listeners;
 
-import name.richardson.james.simplestats.SimpleStats;
-import name.richardson.james.simplestats.persistant.PlayerCountRecord;
+import name.richardson.james.bukkit.simplestats.SimpleStats;
+import name.richardson.james.bukkit.simplestats.persistant.PlayerCountRecord;
 
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerListener;

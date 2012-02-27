@@ -15,11 +15,11 @@
  * You should have received a copy of the GNU General Public License 
  * along with SimpleStats.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package name.richardson.james.simplestats;
+package name.richardson.james.bukkit.simplestats;
 
+import name.richardson.james.bukkit.simplestats.persistant.PlayerCountRecord;
 import name.richardson.james.bukkit.utilities.internals.Logger;
 import name.richardson.james.bukkit.utilities.plugin.SimplePlugin;
-import name.richardson.james.simplestats.persistant.PlayerCountRecord;
 
 import java.io.IOException;
 import java.sql.SQLException;
