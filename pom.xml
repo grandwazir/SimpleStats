@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>name.richardson.james.bukkit</groupId>
   <artifactId>simple-stats</artifactId>
-  <version>1.3.1-SNAPSHOT</version>
+  <version>1.3.1</version>
   <name>SimpleStats</name>
   <description>A plugin for Bukkit that provides simple statistics.</description>
   <url>http://grandwazir.github.com/${project.name}/</url>
