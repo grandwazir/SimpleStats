@@ -28,10 +28,9 @@ import name.richardson.james.bukkit.simplestats.memory.MemoryUsageTask;
 import name.richardson.james.bukkit.simplestats.performance.TickPerSecondMeasurementTask;
 import name.richardson.james.bukkit.simplestats.player.PlayerCountRecord;
 import name.richardson.james.bukkit.simplestats.player.PlayerListener;
-import name.richardson.james.bukkit.utilities.internals.Logger;
-import name.richardson.james.bukkit.utilities.plugin.SimplePlugin;
+import name.richardson.james.bukkit.utilities.plugin.SkeletonPlugin;
 
-public class SimpleStats extends SimplePlugin {
+public class SimpleStats extends SkeletonPlugin {
 
   private DatabaseHandler databaseHandler;
   private SimpleStatsConfiguration configuration;
@@ -102,49 +101,11 @@ public class SimpleStats extends SimplePlugin {
     this.logger.info(this.getSimpleFormattedMessage("plugin-disabled", this.getDescription().getName()));
   }
 
-  @Override
-  public void onEnable() {
-
-    try {
-      this.logger.setPrefix("[SimpleStats] ");
-      this.setResourceBundle();
-      this.loadConfiguration();
-      this.setupDatabase();
-      if (this.configuration.isPlayerCountTrackingEnabled()) {
-        this.enablePlayerCountTracking(true);
-      }
-      if (this.configuration.isMemoryUsageTrackingEnabled()) {
-        this.enableMemoryUsageTracking(true);
-      }
-      if (this.configuration.isPerformanceTrackingEnabled()) {
-        this.enablePerformanceTracking(true);
-      }
-    } catch (final IOException e) {
-      this.logger.severe(this.getMessage("unable-to-create-configuration"));
-      this.setEnabled(false);
-    } catch (final SQLException e) {
-      this.logger.severe(this.getMessage("unable-to-use-database"));
-      e.printStackTrace();
-      this.setEnabled(false);
-    } finally {
-      if (!this.isEnabled()) {
-        this.logger.severe(this.getMessage("panic"));
-        return;
-      }
-    }
-
-    this.logger.info(this.getSimpleFormattedMessage("plugin-enabled", this.getDescription().getFullName()));
-
-  }
-
-  private void loadConfiguration() throws IOException {
+  protected void loadConfiguration() throws IOException {
     this.configuration = new SimpleStatsConfiguration(this);
-    if (this.configuration.isDebugging()) {
-      Logger.setDebugging(this, true);
-    }
   }
 
-  private void setupDatabase() throws SQLException {
+  protected void setupDatabase() throws SQLException {
     try {
       this.getDatabase().find(PlayerCountRecord.class).findRowCount();
     } catch (final PersistenceException ex) {
@@ -152,6 +113,28 @@ public class SimpleStats extends SimplePlugin {
       this.installDDL();
     }
     this.databaseHandler = new DatabaseHandler(this.getDatabase());
+    this.enableTracking();
+  }
+  
+  private void enableTracking() {
+    if (this.configuration.isPlayerCountTrackingEnabled()) {
+      this.enablePlayerCountTracking(true);
+    }
+    if (this.configuration.isMemoryUsageTrackingEnabled()) {
+      this.enableMemoryUsageTracking(true);
+    }
+    if (this.configuration.isPerformanceTrackingEnabled()) {
+      this.enablePerformanceTracking(true);
+    }
+  }
+
+  
+  public String getGroupID() {
+    return "name.richardson.james.bukkit";
+  }
+
+  public String getArtifactID() {
+    return "simple-stats";
   }
 
 }

@@ -20,14 +20,14 @@ package name.richardson.james.bukkit.simplestats;
 
 import java.io.IOException;
 
-import name.richardson.james.bukkit.utilities.configuration.AbstractConfiguration;
+import name.richardson.james.bukkit.utilities.configuration.PluginConfiguration;
 import name.richardson.james.bukkit.utilities.formatters.TimeFormatter;
-import name.richardson.james.bukkit.utilities.plugin.SimplePlugin;
+import name.richardson.james.bukkit.utilities.plugin.SkeletonPlugin;
 
-public class SimpleStatsConfiguration extends AbstractConfiguration {
+public class SimpleStatsConfiguration extends PluginConfiguration {
 
-  public SimpleStatsConfiguration(final SimplePlugin plugin) throws IOException {
-    super(plugin, "config.yml");
+  public SimpleStatsConfiguration(final SkeletonPlugin plugin) throws IOException {
+    super(plugin);
   }
 
   public long getMemoryUsageTrackingInterval() {
@@ -36,10 +36,6 @@ public class SimpleStatsConfiguration extends AbstractConfiguration {
 
   public long getPerformaceTrackingInterval() {
     return TimeFormatter.parseTime(this.configuration.getString("performance-tracking.interval", "5m"));
-  }
-
-  public boolean isDebugging() {
-    return this.configuration.getBoolean("debugging");
   }
 
   public boolean isMemoryUsageTrackingEnabled() {

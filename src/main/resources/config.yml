@@ -1,4 +1,8 @@
 debugging: false
+automatic-updates:
+  enabled: true
+  method: automatic
+  branch: stable
 player-count-tracking:
   enabled: true
 memory-tracking:
