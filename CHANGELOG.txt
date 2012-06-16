@@ -1,5 +1,15 @@
-Changelog for SimpleStats (v1.3.0-SNAPSHOT)
+Changelog for SimpleStats (v1.3.2-SNAPSHOT)
 
+2012-06-15 22:04:41 +0100    added auto updater ability (James Richardson)
+
+v1.3.1
+2012-03-25 00:11:41 +0000    added site.xml (James Richardson)
+2012-03-25 00:11:24 +0000    build against latest version of BukkitUtilities (James Richardson)
+2012-02-27 21:39:11 +0000    fix typo in README (James Richardson)
+
+v1.3.0
+2012-02-27 21:34:56 +0000    add github downloads to build (James Richardson)
+2012-02-27 21:33:03 +0000    preparing to release (James Richardson)
 2012-02-27 21:31:15 +0000    code clean up (James Richardson)
 2012-02-27 21:25:23 +0000    added README (James Richardson)
 2012-02-27 21:14:49 +0000    upcase POM (James Richardson)
