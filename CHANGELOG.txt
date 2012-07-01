@@ -1,5 +1,8 @@
-Changelog for SimpleStats (v1.3.2-SNAPSHOT)
+Changelog for SimpleStats (v1.4.1-SNAPSHOT)
 
+
+v1.4.0
+2012-06-16 01:11:56 +0100    updated changelog (James Richardson)
 2012-06-15 22:04:41 +0100    added auto updater ability (James Richardson)
 
 v1.3.1

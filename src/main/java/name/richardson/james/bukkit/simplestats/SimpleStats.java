@@ -105,7 +105,7 @@ public class SimpleStats extends SkeletonPlugin {
     this.configuration = new SimpleStatsConfiguration(this);
   }
 
-  protected void setupDatabase() throws SQLException {
+  protected void setupPersistence() throws SQLException {
     try {
       this.getDatabase().find(PlayerCountRecord.class).findRowCount();
     } catch (final PersistenceException ex) {
