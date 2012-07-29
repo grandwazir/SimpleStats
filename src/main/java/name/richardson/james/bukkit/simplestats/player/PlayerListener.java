@@ -18,6 +18,8 @@
  ******************************************************************************/
 package name.richardson.james.bukkit.simplestats.player;
 
+import com.avaje.ebean.EbeanServer;
+
 import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,17 +27,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import name.richardson.james.bukkit.simplestats.DatabaseHandler;
 import name.richardson.james.bukkit.simplestats.SimpleStats;
 
 public class PlayerListener implements Listener {
 
   private final Server server;
-  private final DatabaseHandler handler;
+  private final EbeanServer database;
 
   public PlayerListener(final SimpleStats plugin) {
     this.server = plugin.getServer();
-    this.handler = plugin.getDatabaseHandler();
+    this.database = plugin.getDatabase();
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
@@ -60,7 +61,7 @@ public class PlayerListener implements Listener {
     final PlayerCountRecord record = new PlayerCountRecord();
     record.setPlayerCount(playerCount);
     record.setPlayerMax(this.getMaxPlayers());
-    this.handler.save(record);
+    this.database.save(record);
   }
 
 }

@@ -20,14 +20,15 @@ package name.richardson.james.bukkit.simplestats.performance;
 
 import java.text.DecimalFormat;
 
-import name.richardson.james.bukkit.simplestats.DatabaseHandler;
+import com.avaje.ebean.EbeanServer;
+
 import name.richardson.james.bukkit.simplestats.SimpleStats;
 
 public class TickPerSecondMeasurementTask implements Runnable {
 
   public static final int tickRate = 20;
 
-  private final DatabaseHandler handler;
+  private final EbeanServer database;
 
   // The time now
   private long now;
@@ -41,7 +42,7 @@ public class TickPerSecondMeasurementTask implements Runnable {
   private final float interval;
 
   public TickPerSecondMeasurementTask(final SimpleStats plugin) {
-    this.handler = plugin.getDatabaseHandler();
+    this.database = plugin.getDatabase();
     this.interval = plugin.getSimpleStatsConfiguration().getPerformaceTrackingInterval();
   }
 
@@ -54,7 +55,7 @@ public class TickPerSecondMeasurementTask implements Runnable {
       final TickRateRecord record = new TickRateRecord();
       record.setCreatedAt(this.now);
       record.setTickRate(this.roundTPS(tps));
-      this.handler.save(record);
+      this.database.save(record);
     }
     this.then = System.currentTimeMillis();
   }

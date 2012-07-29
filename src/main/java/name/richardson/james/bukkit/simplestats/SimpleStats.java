@@ -20,19 +20,25 @@ package name.richardson.james.bukkit.simplestats;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
 
+import com.avaje.ebean.EbeanServer;
+
+import name.richardson.james.bukkit.simplestats.memory.MemoryStatusRecord;
 import name.richardson.james.bukkit.simplestats.memory.MemoryUsageTask;
 import name.richardson.james.bukkit.simplestats.performance.TickPerSecondMeasurementTask;
+import name.richardson.james.bukkit.simplestats.performance.TickRateRecord;
 import name.richardson.james.bukkit.simplestats.player.PlayerCountRecord;
 import name.richardson.james.bukkit.simplestats.player.PlayerListener;
+import name.richardson.james.bukkit.utilities.persistence.SQLStorage;
 import name.richardson.james.bukkit.utilities.plugin.SkeletonPlugin;
 
 public class SimpleStats extends SkeletonPlugin {
 
-  private DatabaseHandler databaseHandler;
+  private SQLStorage storage;
   private SimpleStatsConfiguration configuration;
   private PlayerListener playerListener;
 
@@ -42,7 +48,7 @@ public class SimpleStats extends SkeletonPlugin {
   public void enableMemoryUsageTracking(final boolean status) {
     if (status) {
       this.logger.debug("Enabling memory usage tracking.");
-      final MemoryUsageTask task = new MemoryUsageTask(this.databaseHandler);
+      final MemoryUsageTask task = new MemoryUsageTask(this.storage.getEbeanServer());
       final long tickInterval = (this.configuration.getMemoryUsageTrackingInterval() / 1000) * 20;
       this.MemoryUsageTaskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, task, 0, tickInterval);
     } else {
@@ -76,18 +82,20 @@ public class SimpleStats extends SkeletonPlugin {
       this.getServer().getPluginManager().registerEvents(this.playerListener, this);
     } else {
       this.logger.debug("Disabling player count tracking.");
-      // TODO - Add unregistering events when method is added to Bukkit.
-      // See http://forums.bukkit.org/threads/unregistering-of-events.60817
     }
   }
 
   @Override
   public List<Class<?>> getDatabaseClasses() {
-    return DatabaseHandler.getDatabaseClasses();
+    List<Class<?>> list =  new LinkedList<Class<?>>();
+    list.add(MemoryStatusRecord.class);
+    list.add(TickRateRecord.class);
+    list.add(PlayerCountRecord.class);
+    return list;
   }
 
-  public DatabaseHandler getDatabaseHandler() {
-    return this.databaseHandler;
+  public EbeanServer getDatabase() {
+    return this.storage.getDatabaseServer();
   }
 
   public SimpleStatsConfiguration getSimpleStatsConfiguration() {
@@ -106,13 +114,7 @@ public class SimpleStats extends SkeletonPlugin {
   }
 
   protected void setupPersistence() throws SQLException {
-    try {
-      this.getDatabase().find(PlayerCountRecord.class).findRowCount();
-    } catch (final PersistenceException ex) {
-      this.logger.warning(this.getMessage("no-database"));
-      this.installDDL();
-    }
-    this.databaseHandler = new DatabaseHandler(this.getDatabase());
+    this.storage = new SQLStorage(this);
     this.enableTracking();
   }
   

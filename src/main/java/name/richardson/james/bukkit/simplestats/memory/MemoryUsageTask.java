@@ -18,14 +18,14 @@
  ******************************************************************************/
 package name.richardson.james.bukkit.simplestats.memory;
 
-import name.richardson.james.bukkit.simplestats.DatabaseHandler;
+import com.avaje.ebean.EbeanServer;
 
 public class MemoryUsageTask implements Runnable {
 
-  private final DatabaseHandler handler;
+  private final EbeanServer database;
 
-  public MemoryUsageTask(final DatabaseHandler handler) {
-    this.handler = handler;
+  public MemoryUsageTask(final EbeanServer handler) {
+    this.database = handler;
   }
 
   public void run() {
@@ -42,7 +42,7 @@ public class MemoryUsageTask implements Runnable {
     record.setMemoryTotal(totalMemory);
     record.setMemoryUsed(usedMemory);
     record.setMemoryFree(freeMemory);
-    this.handler.save(record);
+    this.database.save(record);
   }
 
 }
