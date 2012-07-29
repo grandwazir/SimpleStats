@@ -48,7 +48,7 @@ public class SimpleStats extends SkeletonPlugin {
       this.logger.debug("Enabling memory usage tracking.");
       final MemoryUsageTask task = new MemoryUsageTask(this.storage.getEbeanServer());
       final long tickInterval = (this.configuration.getMemoryUsageTrackingInterval() / 1000) * 20;
-      this.MemoryUsageTaskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, task, 0, tickInterval);
+      this.MemoryUsageTaskId = this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, task, 0, tickInterval);
     } else {
       if (this.MemoryUsageTaskId != 0) {
         this.logger.debug("Disabling memory usage tracking.");
