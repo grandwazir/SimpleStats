@@ -1,5 +1,10 @@
-Changelog for SimpleStats (v1.4.1-SNAPSHOT)
+Changelog for SimpleStats (v1.4.2-SNAPSHOT)
 
+2012-07-29 17:34:19 +0100    implemented new storage system (James Richardson)
+2012-07-29 17:27:26 +0100    added metrics - removed old database handler (James Richardson)
+
+v1.4.1
+2012-07-01 14:59:00 +0100    fix #1, monitoring tasks not being started (James Richardson)
 
 v1.4.0
 2012-06-16 01:11:56 +0100    updated changelog (James Richardson)

@@ -4,4 +4,3 @@ author: James Richardson (grandwazir)
 website: https://github.com/grandwazir/SimpleStats
 main: name.richardson.james.bukkit.simplestats.SimpleStats
 version: ${project.version}
-database: true

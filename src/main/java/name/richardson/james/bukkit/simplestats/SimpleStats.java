@@ -23,8 +23,6 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.PersistenceException;
-
 import com.avaje.ebean.EbeanServer;
 
 import name.richardson.james.bukkit.simplestats.memory.MemoryStatusRecord;
