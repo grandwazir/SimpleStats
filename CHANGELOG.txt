@@ -1,5 +1,6 @@
 Changelog for SimpleStats (v1.4.2-SNAPSHOT)
 
+2012-07-29 17:36:14 +0100    stop bukkit database from initalising (James Richardson)
 2012-07-29 17:34:19 +0100    implemented new storage system (James Richardson)
 2012-07-29 17:27:26 +0100    added metrics - removed old database handler (James Richardson)
 

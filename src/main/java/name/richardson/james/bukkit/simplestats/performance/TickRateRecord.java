@@ -12,12 +12,14 @@
 package name.richardson.james.bukkit.simplestats.performance;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity()
 @Table(name = "simplestats_performance")
 public class TickRateRecord {
 
+  @Id
   private long createdAt;
 
   private float tickRate;
