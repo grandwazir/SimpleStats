@@ -22,32 +22,32 @@ import java.io.IOException;
 
 import name.richardson.james.bukkit.utilities.configuration.PluginConfiguration;
 import name.richardson.james.bukkit.utilities.formatters.TimeFormatter;
-import name.richardson.james.bukkit.utilities.plugin.SkeletonPlugin;
+import name.richardson.james.bukkit.utilities.plugin.Plugin;
 
 public class SimpleStatsConfiguration extends PluginConfiguration {
 
-  public SimpleStatsConfiguration(final SkeletonPlugin plugin) throws IOException {
+  public SimpleStatsConfiguration(final Plugin plugin) throws IOException {
     super(plugin);
   }
 
   public long getMemoryUsageTrackingInterval() {
-    return TimeFormatter.parseTime(this.configuration.getString("memory-tracking.interval", "5m"));
+    return TimeFormatter.parseTime(this.getConfiguration().getString("memory-tracking.interval", "5m"));
   }
 
   public long getPerformaceTrackingInterval() {
-    return TimeFormatter.parseTime(this.configuration.getString("performance-tracking.interval", "5m"));
+    return TimeFormatter.parseTime(this.getConfiguration().getString("performance-tracking.interval", "5m"));
   }
 
   public boolean isMemoryUsageTrackingEnabled() {
-    return this.configuration.getBoolean("memory-tracking.enabled");
+    return this.getConfiguration().getBoolean("memory-tracking.enabled");
   }
 
   public boolean isPerformanceTrackingEnabled() {
-    return this.configuration.getBoolean("performance-tracking.enabled");
+    return this.getConfiguration().getBoolean("performance-tracking.enabled");
   }
 
   public boolean isPlayerCountTrackingEnabled() {
-    return this.configuration.getBoolean("player-count-tracking.enabled");
+    return this.getConfiguration().getBoolean("player-count-tracking.enabled");
   }
 
 }

@@ -31,10 +31,11 @@ import name.richardson.james.bukkit.simplestats.performance.TickPerSecondMeasure
 import name.richardson.james.bukkit.simplestats.performance.TickRateRecord;
 import name.richardson.james.bukkit.simplestats.player.PlayerCountRecord;
 import name.richardson.james.bukkit.simplestats.player.PlayerListener;
+import name.richardson.james.bukkit.utilities.configuration.DatabaseConfiguration;
 import name.richardson.james.bukkit.utilities.persistence.SQLStorage;
-import name.richardson.james.bukkit.utilities.plugin.SkeletonPlugin;
+import name.richardson.james.bukkit.utilities.plugin.AbstractPlugin;
 
-public class SimpleStats extends SkeletonPlugin {
+public class SimpleStats extends AbstractPlugin {
 
   private SQLStorage storage;
   private SimpleStatsConfiguration configuration;
@@ -45,13 +46,11 @@ public class SimpleStats extends SkeletonPlugin {
 
   public void enableMemoryUsageTracking(final boolean status) {
     if (status) {
-      this.logger.debug("Enabling memory usage tracking.");
       final MemoryUsageTask task = new MemoryUsageTask(this.storage.getEbeanServer());
       final long tickInterval = (this.configuration.getMemoryUsageTrackingInterval() / 1000) * 20;
       this.MemoryUsageTaskId = this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, task, 0, tickInterval);
     } else {
       if (this.MemoryUsageTaskId != 0) {
-        this.logger.debug("Disabling memory usage tracking.");
         this.getServer().getScheduler().cancelTask(this.MemoryUsageTaskId);
         this.MemoryUsageTaskId = 0;
       }
@@ -60,13 +59,11 @@ public class SimpleStats extends SkeletonPlugin {
 
   public void enablePerformanceTracking(final boolean status) {
     if (status) {
-      this.logger.debug("Enabling performance tracking.");
       final TickPerSecondMeasurementTask task = new TickPerSecondMeasurementTask(this);
       final long tickInterval = (this.configuration.getPerformaceTrackingInterval() / 1000) * 20;
       this.TickPerSecondMeasurementTaskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, task, 0, tickInterval);
     } else {
       if (this.TickPerSecondMeasurementTaskId != 0) {
-        this.logger.debug("Disabling performance tracking.");
         this.getServer().getScheduler().cancelTask(this.TickPerSecondMeasurementTaskId);
         this.TickPerSecondMeasurementTaskId = 0;
       }
@@ -75,11 +72,9 @@ public class SimpleStats extends SkeletonPlugin {
 
   public void enablePlayerCountTracking(final boolean status) {
     if (status) {
-      this.logger.debug("Enabling player count tracking.");
       this.playerListener = new PlayerListener(this);
       this.getServer().getPluginManager().registerEvents(this.playerListener, this);
     } else {
-      this.logger.debug("Disabling player count tracking.");
     }
   }
 
@@ -93,7 +88,7 @@ public class SimpleStats extends SkeletonPlugin {
   }
 
   public EbeanServer getDatabase() {
-    return this.storage.getDatabaseServer();
+    return this.storage.getEbeanServer();
   }
 
   public SimpleStatsConfiguration getSimpleStatsConfiguration() {
@@ -104,16 +99,21 @@ public class SimpleStats extends SkeletonPlugin {
   public void onDisable() {
     this.enableMemoryUsageTracking(false);
     this.enablePlayerCountTracking(false);
-    this.logger.info(this.getSimpleFormattedMessage("plugin-disabled", this.getDescription().getName()));
   }
 
   protected void loadConfiguration() throws IOException {
+    super.loadConfiguration();
     this.configuration = new SimpleStatsConfiguration(this);
   }
 
-  protected void setupPersistence() throws SQLException {
-    this.storage = new SQLStorage(this);
-    this.enableTracking();
+  protected void establishPersistence() throws SQLException {
+    try {
+      this.storage = new SQLStorage(this, new DatabaseConfiguration(this), this.getDatabaseClasses());
+      this.storage.initalise();
+      this.enableTracking();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
   
   private void enableTracking() {
@@ -128,7 +128,6 @@ public class SimpleStats extends SkeletonPlugin {
     }
   }
 
-  
   public String getGroupID() {
     return "name.richardson.james.bukkit";
   }
